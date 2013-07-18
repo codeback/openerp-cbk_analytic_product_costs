@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record id="product_costs_form_view" model="ir.ui.view">
+            <field name="name">product.costs.form</field>
+            <field name="model">product.costs</field>
+            <field name="priority" eval="40"/>
+            <field name="arch" type="xml">
+                <form string="Properties categories" version="7.0">
+                    <group col="4" string="General Information">
+                        <field name="from_date" />
+                        <field name="to_date" />
+                        <field name="invoice_state" />                        
+                    </group>
+                    <footer>
+                        <button name="get_costs" string="Open Costs" type="object"  class="oe_highlight"  />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Product Costs"
+            res_model="product.costs"
+            src_model="product.product"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"            
+            id="product_costs_act_window" />
+
+    </data>
+</openerp>

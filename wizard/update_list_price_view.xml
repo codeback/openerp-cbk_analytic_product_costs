@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_update_list_price" model="ir.ui.view">
+            <field name="name">Update list price</field>
+            <field name="model">cost.product.update.catalog</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Update list price" version="7.0">
+                    <label string="
+                WARNING!: You are about to recalculate the sales base price used in the list prices of the system. This action cannot be undone, use it at your own risk."/>                            
+                    <footer>
+                        <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
+                        or
+                         <button name="update_list_price" string="Update list price" type="object" icon="terp-gtk-go-back-rtl"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Update list price"
+            res_model="cost.product.update.catalog"
+            src_model="product.product"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_update_list_price"/>
+    </data>
+</openerp>

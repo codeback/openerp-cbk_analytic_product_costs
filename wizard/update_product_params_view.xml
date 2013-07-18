@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_update_product_params" model="ir.ui.view">
+            <field name="name">Update product costs</field>
+            <field name="model">cost.product.update.params.wizard</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="Selected products" version="7.0">          
+                    <field name="update_lines_ids">          
+                        <separator string="Products" name="product_separator"/>
+                            <tree editable="bottom" string="Products to update">
+                                <field name="product_id" invisible="1"/>
+                                <field name="product_name" />
+                                <field name="packaging_unit_cost" />
+                                <field name="delivery_cost" />
+                                <field name="profit" />                        
+                            </tree>
+                    </field>                            
+                    <footer>
+                        <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
+                        or
+                         <button name="update_product_params" string="Update list price" type="object" icon="terp-gtk-go-back-rtl"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+         <record id="view_update_product_params_line" model="ir.ui.view">
+            <field name="name">Update Line</field>
+            <field name="model">cost.product.update.params.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="Order lines">
+                    <field name="product_id" invisible="1"/>
+                    <field name="product_name" readonly="1" />
+                    <field name="packaging_unit_cost" />
+                    <field name="delivery_cost" />
+                    <field name="profit" />                   
+                </tree>
+            </field>
+        </record>
+
+        <act_window name="Update product costs"
+            res_model="cost.product.update.params.wizard"
+            src_model="product.product"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_update_product_params"/>
+    </data>
+</openerp>

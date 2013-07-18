@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_new_list_price" model="ir.ui.view">
+            <field name="name">New list price</field>
+            <field name="model">cost.product.new.catalog</field>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <form string="New list price" version="7.0">
+                    <label string="
+                Warning !!!"/>
+
+                    <field name="name"/>
+                    <footer>
+                        <button special="cancel" string="_Cancel" icon='gtk-cancel'/>
+                        or
+                         <button name="new_list_price" string="New list price" type="object" icon="terp-gtk-go-back-rtl"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="New list price"
+            res_model="cost.product.new.catalog"
+            src_model="product.product"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_new_list_price"/>
+    </data>
+</openerp>
