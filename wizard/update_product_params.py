@@ -81,7 +81,7 @@ class cost_product_update_params_wizard (osv.osv_memory):
             prod_model.write(cr, uid, [prod.id], val)
         
         costs_model = self.pool.get('product.costs')        
-        return costs_model.update_view(cr, uid, context=context)
+        return costs_model.redirect_view(cr, uid, context=context)
 
 cost_product_update_params_wizard ()
 

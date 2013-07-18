@@ -28,18 +28,7 @@
                 </xpath>              
             </field>
         </record>   
-        
-        <record id="product_ul_form_view_cbk_analytic_accounting" model="ir.ui.view">           
-            <field name="model">product.ul</field>
-            <field name="inherit_id" ref="product.product_ul_form_view"/>
-            <field name="arch" type="xml">
-                <field name="type" position="after">
-                    <field name="unit_price"/>
-                    <field name="delivery_cost"/>                    
-                </field>
-            </field>
-        </record>
-
+                
         <record id="view_product_costs_form" model="ir.ui.view">
             <field name="name">view.product.costs.form</field>
             <field name="model">product.product</field>

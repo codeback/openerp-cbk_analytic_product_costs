@@ -1,0 +1,338 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* cbk_analytic_product_costs
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130515-231043\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-18 14:15+0000\n"
+"PO-Revision-Date: 2013-07-18 14:15+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.line,delivery_cost:0
+#: field:product.product,delivery_cost:0
+msgid "Delivery cost"
+msgstr "Coste de entrega"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,expected_sale_margin_rate:0
+msgid "Expected Margin (%)"
+msgstr "Margen Esperado (%)"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,actual_sale_price:0
+msgid "Avg sale price"
+msgstr "Precio venta medio"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Analytical Accounting Manager"
+msgstr "Gestor Analítico de Costes"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.line,profit:0
+#: view:product.product:0
+msgid "Profit"
+msgstr "Beneficio"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.line,wizard_id:0
+msgid "Wizard"
+msgstr "Asistente"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,manufactured_units:0
+msgid "Manufactured units"
+msgstr "Unidades fabricadas"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.new.catalog:0
+msgid "                WARNING!: You are about generate a new list price. Use this option with caution."
+msgstr "                WARNING!: Estás a punto de generar una nueva tarifa. Usa esta opción con precaución."
+
+#. module: cbk_analytic_product_costs
+#: selection:product.costs,invoice_state:0
+msgid "Draft, Open and Paid"
+msgstr "Borrador, abiertas y pagadas"
+
+#. module: cbk_analytic_product_costs
+#: code:addons/cbk_analytic_product_costs/product_costs.py:71
+#: model:ir.ui.menu,name:cbk_analytic_product_costs.menu_action_product_costs
+#: view:product.product:0
+#, python-format
+msgid "Product Cost Analysis"
+msgstr "Análisis de costes del producto"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.model,name:cbk_analytic_product_costs.model_product_costs
+msgid "product.costs"
+msgstr "product.costs"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,direct_cost:0
+msgid "Direct costs"
+msgstr "Costes directos"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.catalog:0
+msgid "                 WARNING!: You are about to recalculate the sales base price used in the list prices of the system. This action cannot be undone, use it at your own risk."
+msgstr "                PRECAUCIÓN!: Estás a punto de recalcular los precios base de venta usados en todas las tarifas del sistema. Está acción no tiene march atrás, úsala bajo tu responsabilidad."
+
+#. module: cbk_analytic_product_costs
+#: field:product.costs,from_date:0
+msgid "From"
+msgstr "De"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,packaging_unit_cost:0
+msgid "Packaging unit cost"
+msgstr "Coste empaquetado"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.actions.act_window,name:cbk_analytic_product_costs.product_costs_act_window
+#: view:product.product:0
+msgid "Product Costs"
+msgstr "Costes del producto"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.model,name:cbk_analytic_product_costs.model_cost_product_new_catalog
+msgid "cost.product.new.catalog"
+msgstr "cost.product.new.catalog"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.line,product_id:0
+#: field:cost.product.update.params.line,product_name:0
+#: model:ir.model,name:cbk_analytic_product_costs.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.new.catalog:0
+#: view:cost.product.update.catalog:0
+#: view:cost.product.update.params.wizard:0
+#: view:product.costs:0
+msgid "or"
+msgstr "o"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Avg. price"
+msgstr "Precio medio"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Catalog Price"
+msgstr "Precio catálogo"
+
+#. module: cbk_analytic_product_costs
+#: selection:product.costs,invoice_state:0
+msgid "Paid"
+msgstr "Pagado"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,procurement_units:0
+msgid "Procured units"
+msgstr "Unidades abastecidas"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,profit:0
+msgid "Profit %"
+msgstr "Beneficio %"
+
+#. module: cbk_analytic_product_costs
+#: view:product.costs:0
+msgid "Open Costs"
+msgstr "Abrir costes"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Ref."
+msgstr "Ref."
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Analysis Criteria"
+msgstr "Criterios de análisis"
+
+#. module: cbk_analytic_product_costs
+#: field:product.costs,to_date:0
+msgid "To"
+msgstr "Hasta"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,sale_manpower:0
+msgid "Sale Manpower"
+msgstr "Mano de obra de venta"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,real_sale_margin_rate:0
+msgid "Real Margin (%)"
+msgstr "Margen real (%)"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.new.catalog:0
+#: view:cost.product.update.catalog:0
+#: view:cost.product.update.params.wizard:0
+msgid "_Cancel"
+msgstr "Cancelar"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.model,name:cbk_analytic_product_costs.model_cost_product_update_params_line
+msgid "cost.product.update.params.line"
+msgstr "cost.product.update.params.line"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,purchased_units:0
+msgid "Purchased units"
+msgstr "Unidades compradas"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Cost Accounting"
+msgstr "Contabilidad de costes"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Internal Logistics cost"
+msgstr "Costes logísticos internos"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.params.wizard:0
+msgid "Products to update"
+msgstr "Productos a actualizar"
+
+#. module: cbk_analytic_product_costs
+#: field:product.costs,invoice_state:0
+msgid "Invoice State"
+msgstr "Estado factura"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.params.wizard:0
+msgid "Products"
+msgstr "Productos"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,indirect_cost:0
+msgid "Indirect costs"
+msgstr "Costes indirectos"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.model,name:cbk_analytic_product_costs.model_cost_product_update_params_wizard
+msgid "cost.product.update.params.wizard"
+msgstr "cost.product.update.params.wizard"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Indirect cost"
+msgstr "Coste indirecto"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,purchase_manpower:0
+msgid "Purchase Manpower"
+msgstr "Mano de obra de compras"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.params.wizard:0
+msgid "Selected products"
+msgstr "Productos seleccionados"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.line,packaging_unit_cost:0
+msgid "Packaging cost"
+msgstr "Coste de empaquetado"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Delivery Logistics cost"
+msgstr "Coste de envío salientes"
+
+#. module: cbk_analytic_product_costs
+#: view:product.costs:0
+msgid "Properties categories"
+msgstr "Categorías"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,sold_units:0
+msgid "Sold units"
+msgstr "Unidades vendidas"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.actions.act_window,name:cbk_analytic_product_costs.action_update_product_params
+msgid "Update product costs"
+msgstr "Actualizar costes de productos"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.new.catalog,name:0
+msgid "ListPrice Name"
+msgstr "Nombre tarifa"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,product_sale_price:0
+msgid "Base sale price"
+msgstr "Precio de venta base"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.new.catalog:0
+#: model:ir.actions.act_window,name:cbk_analytic_product_costs.action_new_list_price
+msgid "New list price"
+msgstr "Nueva tarifa"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Packaging"
+msgstr "Empaquetado"
+
+#. module: cbk_analytic_product_costs
+#: view:product.costs:0
+msgid "General Information"
+msgstr "Información general"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.catalog:0
+#: view:cost.product.update.params.wizard:0
+#: model:ir.actions.act_window,name:cbk_analytic_product_costs.action_update_list_price
+msgid "Update list price"
+msgstr "Actualizar tarifas"
+
+#. module: cbk_analytic_product_costs
+#: view:product.product:0
+msgid "Proc. units"
+msgstr "Unidades abastecidas"
+
+#. module: cbk_analytic_product_costs
+#: model:ir.model,name:cbk_analytic_product_costs.model_cost_product_update_catalog
+msgid "cost.product.update.catalog"
+msgstr "cost.product.update.catalog"
+
+#. module: cbk_analytic_product_costs
+#: field:cost.product.update.params.wizard,update_lines_ids:0
+msgid "Update lines"
+msgstr "Actualizar líneas"
+
+#. module: cbk_analytic_product_costs
+#: view:product.costs:0
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: cbk_analytic_product_costs
+#: view:cost.product.update.params.line:0
+msgid "Order lines"
+msgstr "Líneas de pedido"
+
+#. module: cbk_analytic_product_costs
+#: selection:product.costs,invoice_state:0
+msgid "Open and Paid"
+msgstr "Abiertas y pagadas"
+
+#. module: cbk_analytic_product_costs
+#: field:product.product,product_cost_tracking:0
+msgid "Cost tracking (%)"
+msgstr "Seguimiento de costes (%)"
+

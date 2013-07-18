@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="New list price" version="7.0">
                     <label string="
-                Warning !!!"/>
+               WARNING!: You are about generate a new list price. Use this option with caution."/>
 
                     <field name="name"/>
                     <footer>
