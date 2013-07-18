@@ -31,7 +31,6 @@ class product_product(osv.osv):
 
     def _product_costs(self, cr, uid, ids, field_names, arg, context=None):
 
-        res = {}
         if context is None:
             context = {}
 
@@ -101,16 +100,16 @@ class product_product(osv.osv):
         'sale_manpower': fields.float('Sale Manpower'),
         'purchased_units': fields.float('Purchased units'),
         'manufactured_units' : fields.float('Manufactured units'),
-        'procurement_units': fields.function(_product_costs, type='float', string='Procured units', multi='product_margin'),        
+        'procurement_units': fields.float('Procured units'),        
         'direct_cost' : fields.float('Direct costs'),
-        'indirect_cost' : fields.function(_product_costs, type='float', string='Indirect costs', multi='product_margin'),
-        'product_cost' : fields.function(_product_costs, type='float', string='Total cost', multi='product_margin'),
-        'product_sale_price' : fields.function(_product_costs, type='float', string='Base sale price', multi='product_margin'), 
-        'product_cost_tracking' : fields.function(_product_costs, type='float', string='Cost tracking (%)', multi='product_margin'),
+        'indirect_cost' : fields.function(_product_costs, type='float', string='Indirect costs', multi='product_costs'),
+        'product_cost' : fields.function(_product_costs, type='float', string='Total cost', multi='product_costs'),
+        'product_sale_price' : fields.function(_product_costs, type='float', string='Base sale price', multi='product_costs'), 
+        'product_cost_tracking' : fields.function(_product_costs, type='float', string='Cost tracking (%)', multi='product_costs'),
         'actual_sale_price' : fields.float('Avg sale price'),
         'sold_units' : fields.float('Sold units'),
-        'expected_sale_margin_rate': fields.function(_product_costs, type='float', string='Expected Margin (%)', multi='product_margin'),   
-        'real_sale_margin_rate' : fields.function(_product_costs, type='float', string='Real Margin (%)', multi='product_margin'),
+        'expected_sale_margin_rate': fields.function(_product_costs, type='float', string='Expected Margin (%)', multi='product_costs'),   
+        'real_sale_margin_rate' : fields.function(_product_costs, type='float', string='Real Margin (%)', multi='product_costs'),
     }
     
     _defaults = {
