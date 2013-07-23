@@ -37,7 +37,8 @@
         'product_view.xml',
         'wizard/new_list_price_view.xml',
         'wizard/update_list_price_view.xml',
-        'wizard/update_product_params_view.xml'        
+        'wizard/update_product_params_view.xml',
+        #'security/ir.model.access.csv',        
     ],
     'test': [],
     'installable': True,

@@ -1,14 +1,15 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_cbk_product_costs","product.costs.user", "model_product_costs", "stock.group_stock_user",0,0,0,0
-"access_cbk_product_costs","product.costs.manager", "model_product_costs", "stock.group_stock_manager",1,1,1,1
-"access_cbk_cost_product_new_catalog","cost.product.new.catalog.user", "model_cost_product_new_catalog", "stock.group_stock_user",0,0,0,0
-"access_cbk_cost_product_new_catalog","cost.product.new.catalog.manager", "model_cost_product_new_catalog", "stock.group_stock_manager",1,1,1,1
-"access_cbk_cost_product_update_catalog","cost.product.update.catalog.user", "model_cost_product_update_catalog", "stock.group_stock_user",0,0,0,0
-"access_cbk_cost_product_update_catalog","cost.product.update.catalog.manager", "model_cost_product_update_catalog", "stock.group_stock_manager",1,1,1,1
-"access_cbk_cost_product_update_params_line","cost.product.update.params.line.user", "model_cost_product_update_params_line", "stock.group_stock_user",0,0,0,0
-"access_cbk_cost_product_update_params_line","cost.product.update.params.line.manager", "model_cost_product_update_params_line", "stock.group_stock_manager",1,1,1,1
-"access_cbk_cost_product_update_params_wizard","cost.product.update.params.wizard.user", "model_cost_product_update_params_wizard", "stock.group_stock_user",0,0,0,0
-"access_cbk_cost_product_update_params_wizard","cost.product.update.params.wizard.manager", "model_cost_product_update_params_wizard", "stock.group_stock_manager",1,1,1,1
+"access_cbk_product_costs_user","product.costs.user", "model_product_costs", "account.group_account_user",0,0,0,0
+"access_cbk_product_costs_manager","product.costs.manager", "model_product_costs", "account.group_account_manager",1,1,1,1
+"access_cbk_cost_product_new_catalog_user","cost.product.new.catalog.user", "model_cost_product_new_catalog", "account.group_account_user",0,0,0,0
+"access_cbk_cost_product_new_catalog_manager","cost.product.new.catalog.manager", "model_cost_product_new_catalog", "account.group_account_manager",1,1,1,1
+"access_cbk_cost_product_update_catalog_user","cost.product.update.catalog.user", "model_cost_product_update_catalog", "account.group_account_user",0,0,0,0
+"access_cbk_cost_product_update_catalog_manager","cost.product.update.catalog.manager", "model_cost_product_update_catalog", "account.group_account_manager",1,1,1,1
+"access_cbk_cost_product_update_params_line_user","cost.product.update.params.line.user", "model_cost_product_update_params_line", "account.group_account_user",0,0,0,0
+"access_cbk_cost_product_update_params_line_manager","cost.product.update.params.line.manager", "model_cost_product_update_params_line", "account.group_account_manager",1,1,1,1
+"access_cbk_cost_product_update_params_wizard_user","cost.product.update.params.wizard.user", "model_cost_product_update_params_wizard", "account.group_account_user",0,0,0,0
+"access_cbk_cost_product_update_params_wizard_manager","cost.product.update.params.wizard.manager", "model_cost_product_update_params_wizard", "account.group_account_manager",1,1,1,1
+
 
 
 

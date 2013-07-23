@@ -95,7 +95,7 @@
             </field>
         </record>
 
-        <menuitem name="BSC" id="base.menu_bsc" parent="base.menu_reporting" sequence="12"/>
+        <menuitem name="BSC" id="base.menu_bsc" parent="account.menu_finance" sequence="12"/>
         <menuitem action="product_costs_act_window" id="menu_action_product_costs" name="Product Cost Analysis" sequence="6" parent="base.menu_bsc"/>
         
     </data>
