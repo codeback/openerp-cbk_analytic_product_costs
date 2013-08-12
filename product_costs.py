@@ -42,7 +42,7 @@ class product_costs(osv.osv_memory):
         date_to = product_costs_obj.to_date
         invoice_state = product_costs_obj.invoice_state
 
-        prod_obj = self.pool.get('product.product')
+        prod_obj = self.pool.get('product.product.costs')
         args = []
         ids = prod_obj.search(cr, uid, args, context=context)
         prods = prod_obj.browse(cr, uid, ids, context=context)
@@ -172,7 +172,7 @@ class product_costs(osv.osv_memory):
             'context': context,
             'view_type': 'form',
             "view_mode": 'tree,form',
-            'res_model':'product.product',
+            'res_model':'product.product.costs',
             'type': 'ir.actions.act_window',
             'views': [(view_res,'tree'), (view_res2,'form')],
             'view_id': False,

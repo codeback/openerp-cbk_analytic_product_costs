@@ -32,7 +32,7 @@ class cost_product_update_catalog (osv.osv_memory):
 
     def update_list_price(self, cr, uid, ids, context=None):
         
-        prod_model = self.pool.get('product.product')
+        prod_model = self.pool.get('product.product.costs')
         prods = prod_model.browse(cr, uid, context['active_ids'], context=context)
 
         for prod in prods:

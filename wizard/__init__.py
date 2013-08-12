@@ -23,5 +23,4 @@
 import new_list_price
 import update_list_price
 import update_product_params
-import product_cost_params
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

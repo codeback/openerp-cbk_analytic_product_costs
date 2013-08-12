@@ -26,7 +26,24 @@ import pdb
 from osv import fields, osv
 
 class product_product(osv.osv):
+    """añadimos varios campos para gestionar el uso del módulo por producto"""
+    _inherit = "product.product"
+    
+    _columns = {
+        'profit': fields.float('Profit %'),   
+        'packaging_unit_cost': fields.float('Packaging unit cost'),
+        'delivery_cost': fields.float('Delivery cost'),
+    }
+
+    _defaults = {
+        'profit': 0,
+        'packaging_unit_cost': 0,
+        'delivery_cost': 0,
+    }
+
+class product_product_costs(osv.osv):
     """añadimos un campo para gestionar el uso del módulo por producto"""
+    _name = "product.product.costs"
     _inherit = "product.product"
 
     def _product_costs(self, cr, uid, ids, field_names, arg, context=None):
@@ -93,9 +110,6 @@ class product_product(osv.osv):
         return math.fabs(total_amount)
 
     _columns = {
-        'profit': fields.float('Profit %'),   
-        'packaging_unit_cost': fields.float('Packaging unit cost'),
-        'delivery_cost': fields.float('Delivery cost'),
         'purchase_manpower': fields.float('Purchase Manpower'),
         'sale_manpower': fields.float('Sale Manpower'),
         'purchased_units': fields.float('Purchased units'),
@@ -112,12 +126,6 @@ class product_product(osv.osv):
         'real_sale_margin_rate' : fields.function(_product_costs, type='float', string='Real Margin (%)', multi='product_costs'),
     }
     
-    _defaults = {
-    	'profit': 0,
-        'packaging_unit_cost': 0,
-        'delivery_cost': 0,
-    }
-    
-product_product()
+product_product_costs()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

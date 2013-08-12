@@ -42,7 +42,7 @@
 
         <act_window name="Update product costs"
             res_model="cost.product.update.params.wizard"
-            src_model="product.product"
+            src_model="product.product.costs"
             key2="client_action_multi"
             multi="True"
             view_mode="form"

@@ -14,13 +14,6 @@
                             <field name="packaging_unit_cost"/>
                             <field name="delivery_cost"/>
                         </group>
-                        <group string= "Internal Logistics cost">
-                            <field name="purchase_manpower"/>
-                            <field name="sale_manpower"/>
-                        </group>
-                        <group string= "Indirect cost">
-                            <field name="indirect_cost" readonly="1"/>
-                        </group>
                         <group string= "Profit">
                             <field name="profit"/>
                         </group>
@@ -31,7 +24,7 @@
                 
         <record id="view_product_costs_form" model="ir.ui.view">
             <field name="name">view.product.costs.form</field>
-            <field name="model">product.product</field>
+            <field name="model">product.product.costs</field>
             <field name="priority" eval="40"/>
             <field name="arch" type="xml">
                  <form string="Product Costs" version="7.0">
@@ -67,7 +60,7 @@
 
         <record id="view_product_costs_tree" model="ir.ui.view">
             <field name="name">view.product.costs.tree</field>
-            <field name="model">product.product</field>
+            <field name="model">product.product.costs</field>
             <field name="priority" eval="50"/>
             <field name="arch" type="xml">
                 <tree string="Product Cost Analysis" colors="red:product_cost_tracking &lt; 0; orange:product_cost_tracking &lt; 10 and product_cost_tracking &gt; 0; green:product_cost_tracking &gt; 10; black:product_cost_tracking == 0.00">

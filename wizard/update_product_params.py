@@ -51,7 +51,7 @@ class cost_product_update_params_wizard (osv.osv_memory):
         res = super(cost_product_update_params_wizard, self).default_get(cr, uid, fields, context=context)
         update_ids = context.get('active_ids', [])     
 
-        update_objs = self.pool.get('product.product').browse(cr, uid, update_ids, context=context)   
+        update_objs = self.pool.get('product.product.costs').browse(cr, uid, update_ids, context=context)   
     
         update_lines = []
         for update_obj in update_objs:

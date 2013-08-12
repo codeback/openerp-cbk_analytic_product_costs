@@ -20,7 +20,7 @@
 
         <act_window name="Update list price"
             res_model="cost.product.update.catalog"
-            src_model="product.product"
+            src_model="product.product.costs"
             key2="client_action_multi"
             multi="True"
             view_mode="form"
