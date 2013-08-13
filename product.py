@@ -40,6 +40,7 @@ class product_product(osv.osv):
         'packaging_unit_cost': 0,
         'delivery_cost': 0,
     }
+product_product()
 
 class product_product_costs(osv.osv):
     """añadimos un campo para gestionar el uso del módulo por producto"""
