@@ -33,7 +33,7 @@
     'sequence': 23,
     'demo': [],
     'data': [
-        #'security/ir.model.access.csv',    
+        'security/ir.model.access.csv',    
         'product_costs_view.xml',
         'product_view.xml',
         'wizard/new_list_price_view.xml',
