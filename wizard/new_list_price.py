@@ -33,8 +33,8 @@ class cost_product_new_catalog(osv.osv_memory):
     }
 
     def new_list_price(self, cr, uid, ids, context=None):                        
-        prod_model = self.pool.get('product.product.costs')
-        prods = prod_model.browse(cr, uid, context['active_ids'], context=context)
+        prod_costs_model = self.pool.get('product.costs')
+        prods = prod_costs_model.browse(cr, uid, context['active_ids'], context=context)
 
         data_obj = self.browse(cr, uid, ids, context=context)[0]
 
@@ -70,7 +70,7 @@ class cost_product_new_catalog(osv.osv_memory):
             vals = {}
             vals["name"] = prod.default_code or prod.name
             vals["price_version_id"] = pl_version_id            
-            vals["product_id"] = prod.id
+            vals["product_id"] = prod.product_id.id
             vals["base"] = 1 #Precio al público
             vals["price_discount"] = (prod.product_sale_price - prod.list_price) / prod.list_price
             vals["company_id"] = pl.company_id.id

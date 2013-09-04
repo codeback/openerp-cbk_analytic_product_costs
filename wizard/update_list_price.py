@@ -32,15 +32,16 @@ class cost_product_update_catalog (osv.osv_memory):
 
     def update_list_price(self, cr, uid, ids, context=None):
         
-        prod_model = self.pool.get('product.product.costs')
-        prods = prod_model.browse(cr, uid, context['active_ids'], context=context)
+        prod_model = self.pool.get('product.product')
+        prod_costs_model = self.pool.get('product.costs')
+        prods = prod_costs_model.browse(cr, uid, context['active_ids'], context=context)
 
         for prod in prods:
             val = {}
             val["list_price"] = prod.product_sale_price
-            prod_model.write(cr, uid, [prod.id], val)
+            prod_model.write(cr, uid, [prod.product_id.id], val)
 
-        costs_model = self.pool.get('product.costs')        
+        costs_model = self.pool.get('product.costs.manager')        
         return costs_model.redirect_view(cr, uid, context=context)
 
 cost_product_update_catalog ()

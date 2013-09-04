@@ -22,7 +22,7 @@
 
         <act_window name="New list price"
             res_model="cost.product.new.catalog"
-            src_model="product.product.costs"
+            src_model="product.costs"
             key2="client_action_multi"
             multi="True"
             view_mode="form"

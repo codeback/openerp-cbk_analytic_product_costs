@@ -22,38 +22,89 @@
 
 import time
 import math
+import pdb
 
 from osv import fields, osv
 from openerp.tools.translate import _
 
-class product_costs(osv.osv_memory):
-    """"""
+class product_costs(osv.osv):
+
     _name = "product.costs"
+    
+    _columns = {
+        'product_id': fields.many2one('product.product', 'Product', readonly=True),
+        'default_code': fields.related('product_id', 'default_code', type='char', relation="product.product", string='Ref.', readonly=True, store=False),
+        'name': fields.related('product_id', 'name', type='char', relation="product.product", string='Name', readonly=True, store=False),
+        'list_price': fields.related('product_id', 'list_price', type='float', relation="product.product", string='Catalog Price', readonly=True, store=False),
+        'cost_price': fields.related('product_id', 'cost_price', type='float', relation="product.product", string='Avg. price', readonly=True, store=False),
+
+        'packaging_unit_cost': fields.related('product_id', 'packaging_unit_cost', type='float', relation="product.product", string='PUC', readonly=True, store=False),
+        'delivery_cost': fields.related('product_id', 'delivery_cost', type='float', relation="product.product", string='Delivery cost', readonly=True, store=False),
+        'profit': fields.related('product_id', 'profit', type='float', relation="product.product", string='Profit', readonly=True, store=False),
+
+        'purchased_units': fields.float('Purchased units'),
+        'manufactured_units' : fields.float('Manufactured units'),
+        'procurement_units': fields.float('Procured units'),        
+        'direct_cost' : fields.float('Direct costs'),
+        'indirect_cost' : fields.float('Indirect costs'),
+        'product_cost' : fields.float('Total cost'),
+        'product_sale_price' : fields.float('Base sale price'), 
+        'product_cost_tracking' : fields.float('Cost tracking (%)'),
+        'actual_sale_price' : fields.float('Avg sale price'),
+        'sold_units' : fields.float('Sold units'),
+        'expected_sale_margin_rate': fields.float('Expected Margin (%)'),   
+        'real_sale_margin_rate' : fields.float('Real Margin (%)'),
+    }
+
+    def clear_objects(self, cr, uid, args=[], ids=None):
+        """
+        Elimina los objetos de forma permanente
+        """
+        if not ids:
+            ids = self.search(cr, uid, args)
+        self.unlink(cr, uid, ids)
+    
+product_costs()
+
+class product_costs_manager(osv.osv_memory):
+    """"""
+    _name = "product.costs.manager"
 
     def get_costs(self, cr, uid, ids, context=None):
 
         if context is None:
             context = {}
 
+        #Eliminar los datos existentes
+        prod_costs_model = self.pool.get('product.costs')
+        prod_costs_model.clear_objects(cr, uid)
+
         # DATOS DE CONFIGURACIÓN
         #get the current product.costs object to obtain the values from it
-        product_costs_obj = self.browse(cr, uid, ids, context=context)[0]
-        date_from = product_costs_obj.from_date
-        date_to = product_costs_obj.to_date
-        invoice_state = product_costs_obj.invoice_state
+        prod_costs_mgr_obj = self.browse(cr, uid, ids, context=context)[0]
+        date_from = prod_costs_mgr_obj.from_date
+        date_to = prod_costs_mgr_obj.to_date
+        invoice_state = prod_costs_mgr_obj.invoice_state
 
-        prod_obj = self.pool.get('product.product.costs')
+        # calcular los costes indirectos
+        total_indirect_costs = self._get_indirect_costs(cr, uid, 
+            date_from, date_to, context=context)
+
+        prod_model = self.pool.get('product.product')
         args = []
-        ids = prod_obj.search(cr, uid, args, context=context)
-        prods = prod_obj.browse(cr, uid, ids, context=context)
+        ids = prod_model.search(cr, uid, args, context=context)
+        prods = prod_model.browse(cr, uid, ids, context=context)
 
         total_direct_costs = 0
         vals = {}
+        # Primer paso para hallar los costes directos
         for prod in prods:
             vals[prod.id] = {}
 
             invoiced_data = self._get_invoiced_data(cr, prod.id, 
                 date_from, date_to, invoice_state)
+
+            vals[prod.id]["product_id"] = prod.id
 
             vals[prod.id]["actual_sale_price"] = invoiced_data['sale_avg_price']
             vals[prod.id]["sold_units"] = invoiced_data['sale_num_invoiced']            
@@ -68,33 +119,63 @@ class product_costs(osv.osv_memory):
             sale_cost = prod.packaging_unit_cost + prod.delivery_cost
             vals[prod.id]["direct_cost"] = prod.cost_price + sale_cost
              
-            total_direct_costs += vals[prod.id]["direct_cost"] * vals[prod.id]["procurement_units"]
+            total_direct_costs += vals[prod.id]["direct_cost"] * vals[prod.id]["procurement_units"]           
 
-            prod_obj.write(cr, uid, [prod.id], vals[prod.id], context=context)
+        # porcentaje costes indirectos 
+        weight_ic = 0
+        if total_direct_costs > 0:
+            weight_ic = total_indirect_costs / total_direct_costs
+                
+        # Segundo paso      
+        for prod in prods:
+            value = vals[prod.id]
+            value["indirect_cost"] = value["direct_cost"] * weight_ic
+            value["product_cost"] = value["direct_cost"] + value["indirect_cost"]
+            value["product_sale_price"] = (1 + prod.profit / 100) * value["product_cost"]     
 
-        value = {'total_direct_costs': total_direct_costs}
-        self.write(cr, uid, [product_costs_obj.id], value, context=context)
+            if prod.list_price > 0:
+                value["product_cost_tracking"] = round((prod.list_price-value["product_sale_price"])/prod.list_price,2)*100
+                margin = value["actual_sale_price"] / prod.list_price
+                value["expected_sale_margin_rate"] = round((margin-1)*100,0)
+            else:
+                value["product_cost_tracking"] = 0
+                value["expected_sale_margin_rate"] = 0
 
-        context.update(invoice_state = invoice_state)
-        if date_from:
-            context.update(date_from = date_from)
-        if date_to:
-            context.update(date_to = date_to)
+            if value["product_sale_price"]> 0:                
+                margin = value["actual_sale_price"] / value["product_sale_price"]
+                value["real_sale_margin_rate"] = round((margin-1)*100,0)
+            else:                
+                value["real_sale_margin_rate"] = 0
+
+            prod_costs_model.create(cr, uid, value)
 
         return self.redirect_view(cr, uid, context=context)
- 
+     
+    def _get_indirect_costs(self, cr, uid, date_from, date_to, context=None):
+        
+        line_obj = self.pool.get("account.analytic.line")
+        args = [('date', '>=', date_from), ('date', '<=', date_to)]
+        ids = line_obj.search(cr, uid, args)
+        acc_lines = line_obj.browse(cr, uid, ids)
+
+        total_amount = 0
+        for line in acc_lines:
+            total_amount += line.amount
+
+        return math.fabs(total_amount)
+
     def _compute_costs(self, cr, uid, ids, context=None):
 
         if context is None:
             context = {}
 
-        product_costs_obj = self.browse(cr, uid, ids, context=context)[0]
+        prod_costs_mgr_obj = self.browse(cr, uid, ids, context=context)[0]
 
-        context.update(invoice_state = product_costs_obj.invoice_state)
-        if product_costs_obj.from_date:
-            context.update(date_from = product_costs_obj.from_date)
-        if product_costs_obj.to_date:
-            context.update(date_to = product_costs_obj.to_date)
+        context.update(invoice_state = prod_costs_mgr_obj.invoice_state)
+        if prod_costs_mgr_obj.from_date:
+            context.update(date_from = prod_costs_mgr_obj.from_date)
+        if prod_costs_mgr_obj.to_date:
+            context.update(date_to = prod_costs_mgr_obj.to_date)
 
         return self.redirect_view(cr, uid, context=context)
     
@@ -159,9 +240,9 @@ class product_costs(osv.osv_memory):
         }    
 
     def redirect_view(self, cr, uid, context=None):
-        mod_obj = self.pool.get('ir.model.data')
-        result = mod_obj._get_id(cr, uid, 'product', 'product_search_form_view')
-        id = mod_obj.read(cr, uid, result, ['res_id'], context=context)        
+        #mod_obj = self.pool.get('ir.model.data')
+        #result = mod_obj._get_id(cr, uid, 'product', 'product_search_form_view')
+        #id = mod_obj.read(cr, uid, result, ['res_id'], context=context)        
         cr.execute('select id,name from ir_ui_view where name=%s and type=%s', ('view.product.costs.form', 'form'))
         view_res2 = cr.fetchone()[0]
         cr.execute('select id,name from ir_ui_view where name=%s and type=%s', ('view.product.costs.tree', 'tree'))
@@ -172,11 +253,11 @@ class product_costs(osv.osv_memory):
             'context': context,
             'view_type': 'form',
             "view_mode": 'tree,form',
-            'res_model':'product.product.costs',
+            'res_model':'product.costs',
             'type': 'ir.actions.act_window',
             'views': [(view_res,'tree'), (view_res2,'form')],
-            'view_id': False,
-            'search_view_id': id['res_id']
+            'view_id': False
+            #'search_view_id': id['res_id']
         }    
 
     _columns = {
@@ -187,7 +268,7 @@ class product_costs(osv.osv_memory):
            ('open_paid','Open and Paid'),
            ('draft_open_paid','Draft, Open and Paid'),
         ],'Invoice State', select=True, required=True),
-        'total_direct_costs':fields.float('total direct costs'),
+
     }
     _defaults = {
         'from_date': time.strftime('%Y-01-01'),
@@ -195,4 +276,4 @@ class product_costs(osv.osv_memory):
         'invoice_state': "draft_open_paid",
     } 
     
-product_costs()
+product_costs_manager()
