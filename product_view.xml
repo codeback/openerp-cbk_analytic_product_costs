@@ -10,11 +10,8 @@
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook" position="inside">
                     <page string="Analytical Accounting Manager">
-                        <group string="Delivery Logistics cost">                           
+                        <group>                          
                             <field name="packaging_unit_cost"/>
-                            <field name="delivery_cost"/>
-                        </group>
-                        <group string= "Profit">
                             <field name="profit"/>
                         </group>
                     </page>

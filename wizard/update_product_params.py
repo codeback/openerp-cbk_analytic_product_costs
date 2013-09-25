@@ -33,7 +33,6 @@ class cost_product_update_params_line (osv.TransientModel):
         'product_id' : fields.many2one('product.product', string="Product", required=True, ondelete='CASCADE'),
         'product_name': fields.char('Product', size=128, required=True),    
         'packaging_unit_cost' : fields.float("Packaging cost", required=True),
-        'delivery_cost': fields.float("Delivery cost", required=True),
         'profit' : fields.float("Profit", required=True),
         'wizard_id' : fields.many2one('cost.product.update.params.wizard', string="Wizard", ondelete='CASCADE'),
     }
@@ -65,7 +64,6 @@ class cost_product_update_params_wizard (osv.osv_memory):
                 'product_id': update_obj.id,
                 'product_name': update_obj.name,
                 'packaging_unit_cost': update_obj.packaging_unit_cost,
-                'delivery_cost': update_obj.delivery_cost,
                 'profit': update_obj.profit,               
             }
             update_lines.append(update_line)
@@ -81,7 +79,6 @@ class cost_product_update_params_wizard (osv.osv_memory):
             prod = line.product_id
             val = {}            
             val["packaging_unit_cost"] = line.packaging_unit_cost
-            val["delivery_cost"] = line.delivery_cost
             val["profit"] = line.profit
 
             prod_model.write(cr, uid, [prod.id], val)

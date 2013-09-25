@@ -38,11 +38,9 @@ class product_costs(osv.osv):
         'list_price': fields.related('product_id', 'list_price', type='float', relation="product.product", string='Catalog Price', readonly=True, store=False),
         'cost_price': fields.related('product_id', 'cost_price', type='float', relation="product.product", string='Avg. price', readonly=True, store=False),
 
-        'packaging_unit_cost': fields.related('product_id', 'packaging_unit_cost', type='float', relation="product.product", string='PUC', readonly=True, store=False),        
+        'packaging_unit_cost': fields.related('product_id', 'packaging_unit_cost', type='float', relation="product.product", string='PUC', readonly=True, store=False),
+        'delivery_cost': fields.related('product_id', 'delivery_cost', type='float', relation="product.product", string='Delivery cost', readonly=True, store=False),
         'profit': fields.related('product_id', 'profit', type='float', relation="product.product", string='Profit', readonly=True, store=False),
-
-        'avg_delivery_cost': fields.float('Avg. Deliv. cost'),
-        'avg_rappel': fields.float('Avg. rappel'),
 
         'purchased_units': fields.float('Purchased units'),
         'manufactured_units' : fields.float('Manufactured units'),
@@ -50,8 +48,7 @@ class product_costs(osv.osv):
         'direct_cost' : fields.float('Direct costs'),
         'indirect_cost' : fields.float('Indirect costs'),
         'product_cost' : fields.float('Total cost'),
-        'product_sale_price' : fields.float('Base sale price'),
-        'calculated_sale_price': fields.float('Calcultated sale price'),
+        'product_sale_price' : fields.float('Base sale price'), 
         'product_cost_tracking' : fields.float('Cost tracking (%)'),
         'actual_sale_price' : fields.float('Avg sale price'),
         'sold_units' : fields.float('Sold units'),
@@ -102,7 +99,7 @@ class product_costs_manager(osv.osv_memory):
         for prod in prods:
             vals[prod.id] = {}
 
-            invoiced_data = self._get_invoiced_data(cr, uid, prod.id, 
+            invoiced_data = self._get_invoiced_data(cr, prod.id, 
                 date_from, date_to, invoice_state)
 
             vals[prod.id]["product_id"] = prod.id
@@ -110,8 +107,6 @@ class product_costs_manager(osv.osv_memory):
             vals[prod.id]["actual_sale_price"] = invoiced_data['sale_avg_price']
             vals[prod.id]["sold_units"] = invoiced_data['sale_num_invoiced']            
             vals[prod.id]["purchased_units"] = invoiced_data['purchase_num_invoiced']
-            vals[prod.id]["avg_rappel"] = invoiced_data['avg_rappel']
-            vals[prod.id]["avg_delivery_cost"] = invoiced_data['avg_delivery_cost']
 
             vals[prod.id]["manufactured_units"] = self._get_manufactured_units(cr, uid,
                 prod, date_from, date_to, context=context)
@@ -119,12 +114,10 @@ class product_costs_manager(osv.osv_memory):
             vals[prod.id]["procurement_units"] = vals[prod.id]["purchased_units"] + \
                 vals[prod.id]["manufactured_units"]
 
-            vals[prod.id]["direct_cost"] = prod.cost_price + prod.packaging_unit_cost
-            sold_costs = vals[prod.id]["avg_rappel"] + vals[prod.id]["avg_delivery_cost"]
-            
-            vals[prod.id]["product_cost"] = vals[prod.id]["direct_cost"] + sold_costs
-
-            total_direct_costs += vals[prod.id]["direct_cost"] * vals[prod.id]["procurement_units"]
+            sale_cost = prod.packaging_unit_cost + prod.delivery_cost
+            vals[prod.id]["direct_cost"] = prod.cost_price + sale_cost
+             
+            total_direct_costs += vals[prod.id]["direct_cost"] * vals[prod.id]["procurement_units"]           
 
         # porcentaje costes indirectos 
         weight_ic = 0
@@ -135,10 +128,8 @@ class product_costs_manager(osv.osv_memory):
         for prod in prods:
             value = vals[prod.id]
             value["indirect_cost"] = value["direct_cost"] * weight_ic
-            value["product_cost"] = value["product_cost"] + value["indirect_cost"]
-            value["product_sale_price"] = (1 + prod.profit / 100) * value["product_cost"]
-
-            value["calculated_sale_price"]  = value["product_sale_price"] + value["avg_delivery_cost"] + value["avg_rappel"]
+            value["product_cost"] = value["direct_cost"] + value["indirect_cost"]
+            value["product_sale_price"] = (1 + prod.profit / 100) * value["product_cost"]     
 
             if prod.list_price > 0:
                 value["product_cost_tracking"] = round((prod.list_price-value["product_sale_price"])/prod.list_price,2)*100
@@ -186,7 +177,7 @@ class product_costs_manager(osv.osv_memory):
 
         return self.redirect_view(cr, uid, context=context)
     
-    def _get_invoiced_data(self, cr, uid, prod_id, date_from, date_to, invoice_state):
+    def _get_invoiced_data(self, cr, id, date_from, date_to, invoice_state):
         invoice_types = ()
         states = ()
         if invoice_state == 'paid':
@@ -195,58 +186,7 @@ class product_costs_manager(osv.osv_memory):
             states = ('open', 'paid')
         elif invoice_state == 'draft_open_paid':
             states = ('draft', 'open', 'paid')
-        
-        sqlstr="""select
-                l.price_unit as unit_price,
-                l.quantity as qty,
-                i.partner_id as partner            
-            from account_invoice_line l
-            left join account_invoice i on (l.invoice_id = i.id)
-            left join product_product product on (product.id=l.product_id)
-            left join product_template pt on (pt.id=product.product_tmpl_id)
-            where l.product_id = %s and i.state in %s and i.type IN %s and (i.date_invoice IS NULL or (i.date_invoice>=%s and i.date_invoice<=%s))
-            """
-        res = {}
-        invoice_types = ('out_invoice', 'in_refund')
-        cr.execute(sqlstr, (prod_id, states, invoice_types, date_from, date_to))
-        lines = cr.fetchall()
 
-        total_price = 0.0
-        total_qty = 0.0
-        rappel = 0.0
-        delivery_cost = 0.0
-        for line in lines:
-            unit_price = line[0]
-            qty = line[1]
-            partner_id = line[2]
-            total_price = total_price + unit_price * qty
-            total_qty = total_qty + qty
-
-            partner_mod = self.pool.get("res.partner")
-            partner = partner_mod.browse(cr, uid, partner_id)   
-            
-            pricelist = partner.property_product_pricelist
-            
-            sale_costs = self._get_pricelist_sale_costs(cr, uid, pricelist, 
-                prod_id, qty, partner_id)
-            
-            if sale_costs and sale_costs.get("TE") and sale_costs.get("TI"):
-                rappel = rappel + (sale_costs["TI"] - sale_costs["TE"]) * qty
-
-            if sale_costs and sale_costs.get("TE") and sale_costs.get("Base"):
-                delivery_cost = delivery_cost + (sale_costs["TE"] - sale_costs["Base"]) * qty
-        
-        if total_qty > 0:
-            res['sale_avg_price'] = total_price / total_qty
-            res['sale_num_invoiced'] = total_qty
-            res['avg_rappel'] = rappel / total_qty
-            res['avg_delivery_cost'] = delivery_cost / total_qty
-        else:
-            res['sale_avg_price'] = 0.0
-            res['sale_num_invoiced'] = 0.0
-            res['avg_rappel'] = 0.0
-            res['avg_delivery_cost'] = 0.0
-        
         sqlstr="""select
                 sum(l.price_unit * l.quantity)/sum(l.quantity) as avg_unit_price,
                 sum(l.quantity) as num_qty
@@ -256,106 +196,20 @@ class product_costs_manager(osv.osv_memory):
             left join product_template pt on (pt.id=product.product_tmpl_id)
             where l.product_id = %s and i.state in %s and i.type IN %s and (i.date_invoice IS NULL or (i.date_invoice>=%s and i.date_invoice<=%s))
             """
+        res = {}
+        invoice_types = ('out_invoice', 'in_refund')
+        cr.execute(sqlstr, (id, states, invoice_types, date_from, date_to))
+        result = cr.fetchall()[0]
+        res['sale_avg_price'] = result[0] and result[0] or 0.0
+        res['sale_num_invoiced'] = result[1] and result[1] or 0.0
+
         invoice_types = ('in_invoice', 'out_refund')
-        cr.execute(sqlstr, (prod_id, states, invoice_types, date_from, date_to))
+        cr.execute(sqlstr, (id, states, invoice_types, date_from, date_to))
         result = cr.fetchall()[0]
         res['purchase_avg_price'] = result[0] and result[0] or 0.0
         res['purchase_num_invoiced'] = result[1] and result[1] or 0.0      
 
         return res
-
-    def _get_pricelist_sale_costs(self, cr, uid, pricelist, prod_id, qty, partner_id, res=None, last=False):
-        """
-        Para que funcione bien las tarifas que dependan de [TI] y [TE] (que estén a 
-        su derecha), deben tener una única regla
-        
-        La función tiene que llamar varias veces (de forma recursiva) a 
-        price_get_multi de "product.pricelist" porque hay un bug en esta función
-        """
-
-        if not res:
-            res={}
-
-        if not pricelist:
-            prod_mod = self.pool.get("product.product")
-            res["Base"] = prod_mod.browse(cr, uid, [prod_id])[0].list_price
-        else:
-            pricelist_mod = self.pool.get("product.pricelist")
-            pricelist_item_mod = self.pool.get("product.pricelist.item")
-
-            pricelist_info = pricelist_mod.price_get_multi(cr, uid, pricelist_ids=[pricelist.id], 
-                products_by_qty_by_partner=[(prod_id, qty, partner_id)])
-
-            if pricelist_info and pricelist_info[prod_id] and pricelist_info[prod_id][pricelist.id]:
-
-                if last == True:
-                    res["Base"] = pricelist_info[prod_id][pricelist.id]
-                else:
-                    if pricelist.name[:2] == "TI":
-                        res["TI"] = pricelist_info[prod_id][pricelist.id]
-                    if pricelist.name[:2] == "TD":
-                        res["TE"] = pricelist_info[prod_id][pricelist.id]
-                        last=True           
-
-                    pricelist_item = pricelist_item_mod.browse(cr, uid, [pricelist_info['item_id']])
-
-                    if pricelist_item and pricelist_item[0]:            
-                        pricelist = pricelist_item[0].base_pricelist_id
-                        res = self._get_pricelist_sale_costs(cr, uid, pricelist, prod_id, qty, 
-                            partner_id, res=res, last=last)
-
-        return res
-
-    def _get_pricelists(self, pricelist, res={}):
-        """
-        Función que devuelve los ids de las tarifas de "impuesto de venta" (TI), 
-        "coste de envío a cliente" (TE) y la anterior a la TE (Base)
-        """
-
-        pdb.set_trace()
-        if (pricelist_version and pricelist_version.items_id[0]):
-            
-            pricelist = pricelist_version.pricelist_id
-            if pricelist.name[:4] == "[TI]":
-                res["TI"] = pricelist.id
-            
-            if pricelist.name[:4] == "[TE]":
-                res["TE"] = pricelist.id
-                res["Base"] = pricelist_version.items_id[0].base_pricelist_id
-                return res
-
-            pricelist_version = pricelist_version.items_id[0].base_pricelist_id
-            return self._get_pricelists(pricelist_version, res=res)
-
-        return res
-
-
-
-    def _get_pricelist_sale_costs2(self, pricelist_item, price, sale_costs):
-        """
-        Para que funcione bien las tarifas que dependan de [TI] y [TD] (que estén a 
-        su derecha), deben tener una única regla
-        """
-
-        discount = pricelist_item.price_discount
-        surcharge = pricelist_item.price_surcharge
-        base_price = (price - surcharge) / (1 + discount)
-        
-        if pricelist_item.name[:2] == "[TI]":
-            sale_costs['discount'] = discount
-        
-        if pricelist_item.name[:2] == "[TD]":
-            sale_costs['surcharge'] = surcharge
-            return sale_costs
-
-        base_pricelist = pricelist_item.base_pricelist_id
-        if (base_pricelist and base_pricelist.version_id[0] and 
-            base_pricelist.version_id[0].items_id[0]):
-
-            pricelist_item = base_pricelist.version_id[0].items_id[0]
-            return self._get_pricelist_sale_costs(pricelist_item, base_price, sale_costs)
-
-        return sale_costs
 
     def _get_manufactured_units(self, cr, uid, prod, date_from, date_to, context=None):
         

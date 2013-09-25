@@ -45,13 +45,15 @@
 
                             <separator string="Cost Accounting" colspan="4"/>
                             <field name="cost_price"/>
-                            <field name="packaging_unit_cost"/>
-                            <field name="delivery_cost"/>
-                            <field name="indirect_cost" readonly="1"/>
-                            <field name="product_cost" readonly="1"/>
-                            <field name="profit"/> 
+                            <field name="packaging_unit_cost"/>                                                        
+                            <field name="indirect_cost" />
+                            <field name="product_cost" />                                        
+                            <field name="profit" /> 
                             <field name="product_sale_price" readonly="1"/>
-                            <field name="list_price"/>
+                            <field name="list_price"/>                            
+                            <field name="avg_delivery_cost"/> 
+                            <field name="avg_rappel"/>
+                            <field name="calculated_sale_price" />
                             <field name="product_cost_tracking" readonly="1"/>
                             <field name="actual_sale_price" readonly="1"/>  
                             <field name="real_sale_margin_rate" widget="progressbar"/>                                  
@@ -74,16 +76,18 @@
                     <field name="name"/>
                     <field name="default_code" />
                     <field name="cost_price" />
-                    <field name="packaging_unit_cost" string="Packaging"/>
-                    <field name="delivery_cost"/>
+                    <field name="packaging_unit_cost" string="Packaging"/>                    
                     <field name="indirect_cost" />
-                    <field name="product_cost" />
-                    <field name="profit" /> 
+                    <field name="product_cost" />                                        
+                    <field name="profit" />
                     <field name="product_sale_price" />
                     <field name="list_price" readonly="1"/>
+                    <field name="avg_delivery_cost"/> 
+                    <field name="avg_rappel"/>
+                    <field name="calculated_sale_price" />
                     <field name="product_cost_tracking" />
                     <field name="actual_sale_price" />    
-                    <field name="real_sale_margin_rate" widget="progressbar"/>                                    
+                    <field name="real_sale_margin_rate" widget="progressbar"/>                                  
                     <field name="expected_sale_margin_rate" widget="progressbar"/>
                     <field name="procurement_units" string="Proc. units"/>
                     <field name="sold_units" />

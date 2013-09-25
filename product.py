@@ -33,14 +33,12 @@ class product_product(osv.osv):
     _columns = {
         'profit': fields.float('Profit %'),   
         'packaging_unit_cost': fields.float('Packaging unit cost'),
-        'delivery_cost': fields.float('Delivery cost'),
     }
 
     _defaults = {
         'profit': 0,
         'packaging_unit_cost': 0,
-        'delivery_cost': 0,
     }
-product_product()
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
