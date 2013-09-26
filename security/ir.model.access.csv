@@ -1,18 +1,2 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_cbk_product_product_costs_user","product.product.costs.user", "model_product_product_costs", "account.group_account_user",0,0,0,0
-"access_cbk_product_product_costs_manager","product.product.costs.manager", "model_product_product_costs", "account.group_account_manager",1,1,1,1
-"access_cbk_cost_product_new_catalog_user","cost.product.new.catalog.user", "model_cost_product_new_catalog", "account.group_account_user",0,0,0,0
-"access_cbk_cost_product_new_catalog_manager","cost.product.new.catalog.manager", "model_cost_product_new_catalog", "account.group_account_manager",1,1,1,1
-"access_cbk_cost_product_update_catalog_user","cost.product.update.catalog.user", "model_cost_product_update_catalog", "account.group_account_user",0,0,0,0
-"access_cbk_cost_product_update_catalog_manager","cost.product.update.catalog.manager", "model_cost_product_update_catalog", "account.group_account_manager",1,1,1,1
-"access_cbk_cost_product_update_params_line_user","cost.product.update.params.line.user", "model_cost_product_update_params_line", "account.group_account_user",0,0,0,0
-"access_cbk_cost_product_update_params_line_manager","cost.product.update.params.line.manager", "model_cost_product_update_params_line", "account.group_account_manager",1,1,1,1
-"access_cbk_cost_product_update_params_wizard_user","cost.product.update.params.wizard.user", "model_cost_product_update_params_wizard", "account.group_account_user",0,0,0,0
-"access_cbk_cost_product_update_params_wizard_manager","cost.product.update.params.wizard.manager", "model_cost_product_update_params_wizard", "account.group_account_manager",1,1,1,1
-
-
-
-
-
-
-
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cbk_product_costs_user,access_cbk_product_costs_user,model_product_costs,account.group_account_manager,1,1,1,1
