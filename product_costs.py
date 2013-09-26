@@ -295,9 +295,9 @@ class product_costs_manager(osv.osv_memory):
                 if last == True:
                     res["Base"] = pricelist_info[prod_id][pricelist.id]
                 else:
-                    if pricelist.name[:2] == "[T2":
+                    if pricelist.name[:3] == "[T2":
                         res["T2"] = pricelist_info[prod_id][pricelist.id]
-                    if pricelist.name[:2] == "[T1":
+                    if pricelist.name[:3] == "[T1":
                         res["T1"] = pricelist_info[prod_id][pricelist.id]
                         last=True           
 
