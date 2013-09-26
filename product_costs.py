@@ -234,11 +234,11 @@ class product_costs_manager(osv.osv_memory):
             sale_costs = self._get_pricelist_sale_costs(cr, uid, pricelist, 
                 prod_id, qty, partner_id)
             
-            if sale_costs and sale_costs.get("TE") and sale_costs.get("TI"):
-                rappel = rappel + (sale_costs["TI"] - sale_costs["TE"]) * qty
+            if sale_costs and sale_costs.get("T1") and sale_costs.get("T2"):
+                rappel = rappel + (sale_costs["T2"] - sale_costs["T1"]) * qty
 
-            if sale_costs and sale_costs.get("TE") and sale_costs.get("Base"):
-                delivery_cost = delivery_cost + (sale_costs["TE"] - sale_costs["Base"]) * qty
+            if sale_costs and sale_costs.get("T1") and sale_costs.get("Base"):
+                delivery_cost = delivery_cost + (sale_costs["T1"] - sale_costs["Base"]) * qty
         
         if total_qty > 0:
             res['sale_avg_price'] = total_price / total_qty
@@ -270,7 +270,7 @@ class product_costs_manager(osv.osv_memory):
 
     def _get_pricelist_sale_costs(self, cr, uid, pricelist, prod_id, qty, partner_id, res=None, last=False):
         """
-        Para que funcione bien las tarifas que dependan de [TI] y [TE] (que estén a 
+        Para que funcione bien las tarifas que dependan de [T1] y [T2] (que estén a 
         su derecha), deben tener una única regla
         
         La función tiene que llamar varias veces (de forma recursiva) a 
@@ -295,10 +295,10 @@ class product_costs_manager(osv.osv_memory):
                 if last == True:
                     res["Base"] = pricelist_info[prod_id][pricelist.id]
                 else:
-                    if pricelist.name[:2] == "TI":
-                        res["TI"] = pricelist_info[prod_id][pricelist.id]
-                    if pricelist.name[:2] == "TD":
-                        res["TE"] = pricelist_info[prod_id][pricelist.id]
+                    if pricelist.name[:2] == "[T2":
+                        res["T2"] = pricelist_info[prod_id][pricelist.id]
+                    if pricelist.name[:2] == "[T1":
+                        res["T1"] = pricelist_info[prod_id][pricelist.id]
                         last=True           
 
                     pricelist_item = pricelist_item_mod.browse(cr, uid, [pricelist_info['item_id']])
@@ -309,57 +309,6 @@ class product_costs_manager(osv.osv_memory):
                             partner_id, res=res, last=last)
 
         return res
-
-    def _get_pricelists(self, pricelist, res={}):
-        """
-        Función que devuelve los ids de las tarifas de "impuesto de venta" (TI), 
-        "coste de envío a cliente" (TE) y la anterior a la TE (Base)
-        """
-
-        pdb.set_trace()
-        if (pricelist_version and pricelist_version.items_id[0]):
-            
-            pricelist = pricelist_version.pricelist_id
-            if pricelist.name[:4] == "[TI]":
-                res["TI"] = pricelist.id
-            
-            if pricelist.name[:4] == "[TE]":
-                res["TE"] = pricelist.id
-                res["Base"] = pricelist_version.items_id[0].base_pricelist_id
-                return res
-
-            pricelist_version = pricelist_version.items_id[0].base_pricelist_id
-            return self._get_pricelists(pricelist_version, res=res)
-
-        return res
-
-
-
-    def _get_pricelist_sale_costs2(self, pricelist_item, price, sale_costs):
-        """
-        Para que funcione bien las tarifas que dependan de [TI] y [TD] (que estén a 
-        su derecha), deben tener una única regla
-        """
-
-        discount = pricelist_item.price_discount
-        surcharge = pricelist_item.price_surcharge
-        base_price = (price - surcharge) / (1 + discount)
-        
-        if pricelist_item.name[:2] == "[TI]":
-            sale_costs['discount'] = discount
-        
-        if pricelist_item.name[:2] == "[TD]":
-            sale_costs['surcharge'] = surcharge
-            return sale_costs
-
-        base_pricelist = pricelist_item.base_pricelist_id
-        if (base_pricelist and base_pricelist.version_id[0] and 
-            base_pricelist.version_id[0].items_id[0]):
-
-            pricelist_item = base_pricelist.version_id[0].items_id[0]
-            return self._get_pricelist_sale_costs(pricelist_item, base_price, sale_costs)
-
-        return sale_costs
 
     def _get_manufactured_units(self, cr, uid, prod, date_from, date_to, context=None):
         
