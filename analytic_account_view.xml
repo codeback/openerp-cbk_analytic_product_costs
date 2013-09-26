@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <record id="view_analytic_account_form_cbk_analytic_accounting" model="ir.ui.view">
+            <field name="name">analytic_account.form.cbk.analytic.accounting</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <group name="main" position="inside">  
+                    <group>                        
+                        <field name="assign_product_cost"/>
+                    </group>
+                </group>
+            </field>
+        </record>   
+        
+    </data>
+</openerp>

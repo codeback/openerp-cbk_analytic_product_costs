@@ -51,6 +51,7 @@ class product_costs(osv.osv):
         'indirect_cost' : fields.float('Indirect costs'),
         'product_cost' : fields.float('Total cost'),
         'product_sale_price' : fields.float('Base sale price'),
+        'fixed_sale_price' : fields.float('Fixed sale price'),
         'calculated_sale_price': fields.float('Calcultated sale price'),
         'product_cost_tracking' : fields.float('Cost tracking (%)'),
         'actual_sale_price' : fields.float('Avg sale price'),
@@ -139,17 +140,18 @@ class product_costs_manager(osv.osv_memory):
             value["product_sale_price"] = (1 + prod.profit / 100) * value["product_cost"]
 
             value["calculated_sale_price"]  = value["product_sale_price"] + value["avg_delivery_cost"] + value["avg_rappel"]
+            value["fixed_sale_price"]  =  prod.list_price + value["avg_delivery_cost"] + value["avg_rappel"]
 
             if prod.list_price > 0:
                 value["product_cost_tracking"] = round((prod.list_price-value["product_sale_price"])/prod.list_price,2)*100
-                margin = value["actual_sale_price"] / prod.list_price
+                margin = value["actual_sale_price"] / value["fixed_sale_price"]
                 value["expected_sale_margin_rate"] = round((margin-1)*100,0)
             else:
                 value["product_cost_tracking"] = 0
                 value["expected_sale_margin_rate"] = 0
 
-            if value["product_sale_price"]> 0:                
-                margin = value["actual_sale_price"] / value["product_sale_price"]
+            if value["calculated_sale_price"]> 0:                
+                margin = value["actual_sale_price"] / value["calculated_sale_price"]
                 value["real_sale_margin_rate"] = round((margin-1)*100,0)
             else:                
                 value["real_sale_margin_rate"] = 0
@@ -167,7 +169,9 @@ class product_costs_manager(osv.osv_memory):
 
         total_amount = 0
         for line in acc_lines:
-            total_amount += line.amount
+            # Se comprueba si el asiento pertenece a una cuenta al que se deb imputar costes
+            if line.account_id.assign_product_cost:
+                total_amount += line.amount
 
         return math.fabs(total_amount)
 

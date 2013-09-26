@@ -50,14 +50,15 @@
                             <field name="product_cost" />                                        
                             <field name="profit" /> 
                             <field name="product_sale_price" readonly="1"/>
-                            <field name="list_price"/>                            
+                            <field name="list_price"/>
+                            <field name="product_cost_tracking" readonly="1"/>                
                             <field name="avg_delivery_cost"/> 
                             <field name="avg_rappel"/>
-                            <field name="calculated_sale_price" />
-                            <field name="product_cost_tracking" readonly="1"/>
+                            <field name="fixed_sale_price"/>
+                            <field name="calculated_sale_price"/>                            
                             <field name="actual_sale_price" readonly="1"/>  
-                            <field name="real_sale_margin_rate" widget="progressbar"/>                                  
                             <field name="expected_sale_margin_rate" widget="progressbar"/>
+                            <field name="real_sale_margin_rate" widget="progressbar"/>                                                              
                             <field name="procurement_units" string="Proc. units" readonly="1"/>
                             <field name="sold_units" readonly="1"/>                            
                          </group>
@@ -82,13 +83,14 @@
                     <field name="profit" />
                     <field name="product_sale_price" />
                     <field name="list_price" readonly="1"/>
+                    <field name="product_cost_tracking" />
                     <field name="avg_delivery_cost"/> 
                     <field name="avg_rappel"/>
-                    <field name="calculated_sale_price" />
-                    <field name="product_cost_tracking" />
+                    <field name="fixed_sale_price"/>
+                    <field name="calculated_sale_price" />                    
                     <field name="actual_sale_price" />    
-                    <field name="real_sale_margin_rate" widget="progressbar"/>                                  
                     <field name="expected_sale_margin_rate" widget="progressbar"/>
+                    <field name="real_sale_margin_rate" widget="progressbar"/>                                                      
                     <field name="procurement_units" string="Proc. units"/>
                     <field name="sold_units" />
                 </tree>

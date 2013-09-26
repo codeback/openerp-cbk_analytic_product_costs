@@ -20,9 +20,23 @@
 #
 ##############################################################################
 
-import product
-import product_costs
-import analytic_account
-import wizard
+import time
+import math
+import pdb
+from osv import fields, osv
+
+class account_analytic_account(osv.osv):
+
+    _name = "account.analytic.account"
+    _inherit = "account.analytic.account"
+    
+    _columns = {
+        'assign_product_cost': fields.boolean('Assign cost in product'),   
+    }
+
+    _defaults = {
+        'assign_product_cost': True
+    }
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
