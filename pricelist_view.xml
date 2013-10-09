@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>        
+        <record id="product_pricelist_view_cbk_analytic_accounting" model="ir.ui.view">
+            <field name="name">product.pricelist.form.cbk.analytic.accounting</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">                
+                    <field name="product_cost"/>  
+                </field>    
+            </field>
+        </record>           
+
+        <record id="product_pricelist_view_tree_cbk_analytic_accounting" model="ir.ui.view">
+            <field name="name">product.pricelist.tree.cbk.analytic.accounting</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+            <field name="priority" eval="18"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">                
+                    <field name="product_cost"/>  
+                </field>    
+            </field>
+        </record>
+    </data>
+</openerp>

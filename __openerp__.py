@@ -36,6 +36,7 @@
         'security/ir.model.access.csv',            
         'product_view.xml',
         'product_costs_view.xml',
+        'pricelist_view.xml',
         'analytic_account_view.xml',
         'wizard/new_list_price_view.xml',
         'wizard/update_list_price_view.xml',

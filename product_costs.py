@@ -269,13 +269,6 @@ class product_costs_manager(osv.osv_memory):
         return res
 
     def _get_pricelist_sale_costs(self, cr, uid, pricelist, prod_id, qty, partner_id, res=None, last=False):
-        """
-        Para que funcione bien las tarifas que dependan de [T1] y [T2] (que estén a 
-        su derecha), deben tener una única regla
-        
-        La función tiene que llamar varias veces (de forma recursiva) a 
-        price_get_multi de "product.pricelist" porque hay un bug en esta función
-        """
 
         if not res:
             res={}
@@ -295,9 +288,9 @@ class product_costs_manager(osv.osv_memory):
                 if last == True:
                     res["Base"] = pricelist_info[prod_id][pricelist.id]
                 else:
-                    if pricelist.name[:3] == "[T2":
+                    if pricelist.product_cost == "r":
                         res["T2"] = pricelist_info[prod_id][pricelist.id]
-                    if pricelist.name[:3] == "[T1":
+                    if pricelist.product_cost == "d":
                         res["T1"] = pricelist_info[prod_id][pricelist.id]
                         last=True           
 

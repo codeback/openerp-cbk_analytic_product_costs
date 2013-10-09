@@ -20,10 +20,19 @@
 #
 ##############################################################################
 
-import product
-import product_costs
-import pricelist
-import analytic_account
-import wizard
+import time
+import math
+import pdb
+from osv import fields, osv
+
+class product_pricelist(osv.osv):
+    """"""
+    _name = "product.pricelist"
+    _inherit = "product.pricelist"
+    
+    _columns = {
+        'product_cost': fields.selection((('d','delivery'), ('r','rappel')),'Product cost', 
+            help='If selected, this pricelist will be taken into account in Product Cost Analysis')           
+    }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
