@@ -47,8 +47,13 @@ class product_costs(osv.osv):
         'purchased_units': fields.float('Purchased units'),
         'manufactured_units' : fields.float('Manufactured units'),
         'procurement_units': fields.float('Procured units'),        
+        
+        'total_direct_cost': fields.float('Total direct costs'),      
+        'total_indirect_cost' : fields.float('Total indirect costs'),
         'direct_cost' : fields.float('Direct costs'),
         'indirect_cost' : fields.float('Indirect costs'),
+        'indirect_cost_rate' : fields.float('Indirect costs rate'),
+
         'product_cost' : fields.float('Total cost'),
         'product_sale_price' : fields.float('Base sale price'),
         'fixed_sale_price' : fields.float('Fixed sale price'),
@@ -131,10 +136,19 @@ class product_costs_manager(osv.osv_memory):
         weight_ic = 0
         if total_direct_costs > 0:
             weight_ic = total_indirect_costs / total_direct_costs
-                
+        
+        ####
+        # ÑAPA PEDIDA POR BORJA, ELIMINAR ESTA LÍNEA 
+        ####
+        weight_ic = 0.6
+
         # Segundo paso      
         for prod in prods:
             value = vals[prod.id]
+            value["total_indirect_cost"] = total_indirect_costs
+            value["total_direct_cost"] = total_direct_costs
+            value["indirect_cost_rate"] = weight_ic          
+
             value["indirect_cost"] = value["direct_cost"] * weight_ic
             value["product_cost"] = value["product_cost"] + value["indirect_cost"]
             value["product_sale_price"] = (1 + prod.profit / 100) * value["product_cost"]

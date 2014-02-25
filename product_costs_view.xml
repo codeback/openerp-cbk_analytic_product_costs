@@ -44,9 +44,12 @@
                         <group string="Analysis Criteria">                           
 
                             <separator string="Cost Accounting" colspan="4"/>
+                            <field name="total_indirect_cost" />
+                            <field name="total_direct_cost" />
                             <field name="cost_price"/>
                             <field name="packaging_unit_cost"/>                                                        
-                            <field name="indirect_cost" />
+                            <field name="indirect_cost_rate" />
+                            <field name="indirect_cost" />                            
                             <field name="product_cost" />                                        
                             <field name="profit" /> 
                             <field name="product_sale_price" readonly="1"/>
@@ -76,9 +79,12 @@
                 <tree string="Product Cost Analysis" colors="red:product_cost_tracking &lt; 0; orange:product_cost_tracking &lt; 10 and product_cost_tracking &gt; 0; green:product_cost_tracking &gt; 10; black:product_cost_tracking == 0.00">
                     <field name="name"/>
                     <field name="default_code" />
+                    <field name="total_indirect_cost" />
+                    <field name="total_direct_cost" />
                     <field name="cost_price" />
-                    <field name="packaging_unit_cost" string="Packaging"/>                    
-                    <field name="indirect_cost" />
+                    <field name="packaging_unit_cost" string="Packaging"/> 
+                    <field name="indirect_cost_rate" />                   
+                    <field name="indirect_cost" />                    
                     <field name="product_cost" />                                        
                     <field name="profit" />
                     <field name="product_sale_price" />
