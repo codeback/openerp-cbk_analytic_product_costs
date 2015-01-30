@@ -343,25 +343,16 @@ class product_costs_manager(osv.osv_memory):
             'params': {'menu_id': menu_ids[0]},
         }    
 
-    def redirect_view(self, cr, uid, context=None):
-        #mod_obj = self.pool.get('ir.model.data')
-        #result = mod_obj._get_id(cr, uid, 'product', 'product_search_form_view')
-        #id = mod_obj.read(cr, uid, result, ['res_id'], context=context)        
-        cr.execute('select id,name from ir_ui_view where name=%s and type=%s', ('view.product.costs.form', 'form'))
-        view_res2 = cr.fetchone()[0]
-        cr.execute('select id,name from ir_ui_view where name=%s and type=%s', ('view.product.costs.tree', 'tree'))
-        view_res = cr.fetchone()[0]
-
+    def redirect_view(self, cr, uid, context=None):         
+        menu_mod = self.pool.get('ir.ui.menu')        
+        args = [('name', '=', 'Product Cost Analysis')]
+        menu_ids = menu_mod.search(cr, uid, args)
+        
         return {
-            'name': _('Product Cost Analysis'),
-            'context': context,
-            'view_type': 'form',
-            "view_mode": 'tree,form',
-            'res_model':'product.costs',
-            'type': 'ir.actions.act_window',
-            'views': [(view_res,'tree'), (view_res2,'form')],
-            'view_id': False
-            #'search_view_id': id['res_id']
+            'name': 'Product Cost Analysis',
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+            'params': {'menu_id': menu_ids[0]},
         }    
 
     _columns = {
