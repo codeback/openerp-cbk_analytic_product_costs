@@ -140,7 +140,7 @@ class product_costs_manager(osv.osv_memory):
         ####
         # ÑAPA PEDIDA POR BORJA, ELIMINAR ESTA LÍNEA 
         ####
-        weight_ic = 0.6
+        weight_ic = 0.68
 
         # Segundo paso      
         for prod in prods:
